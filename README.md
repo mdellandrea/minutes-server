@@ -1,4 +1,5 @@
 # Minutes Server
 
-CRUD server for minutes written in Go.
-https://blog.gopheracademy.com/advent-2017/kubernetes-ready-service/
+REST API for minutes calculations written in Go.
+
+Valid time strings are zero-padded strings in the form "HH:MM ${Meridiem}".
