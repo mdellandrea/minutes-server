@@ -1,0 +1,124 @@
+openapi: '3.0.0'
+info:
+  description: 'This is a Minutes server for managing time strings based on a timeId. Valid time strings are formatted as "HH:MM ${meridiem}" with zero padding. For example "12:12 AM" or "01:05 PM"'
+  version: '1.0.0'
+  title: 'Minutes Server'
+  license:
+    name: 'Apache 2.0'
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+paths:
+  /time:
+    post:
+      summary: 'Create a time instance'
+      operationId: 'createTime'
+      requestBody:
+        description: 'Optionally pass a valid timestring to initialize with.'
+        required: false
+        content:
+          'application/json':
+            schema:
+              type: 'object'
+              properties:
+                initialTime:
+                  type: 'string'
+              required:
+              - 'initialTime'
+      responses:
+        200:
+          description: 'New timeId successfully created'
+          content:
+            'application/json; charset=UTF-8':
+              schema:
+                type: 'object'
+                properties:
+                  timeId:
+                    type: 'string'
+                    format: 'uuid'
+                  currentTime:
+                    type: 'string'
+        400:
+          description: 'Invalid request'
+        500:
+          description: 'Server unable to complete request'
+  /time/{timeId}:
+    parameters:
+    - name: 'timeId'
+      in: 'path'
+      required: true
+      description: 'A valid timeId object identifier'
+      schema:
+        type: 'string'
+        format: 'uuid'
+      example: '2eeacc6c-3d66-4bc9-a685-675ca7913831'
+    get:
+      summary: 'Get current time'
+      description: 'Retrieve the current time of a timeId'
+      operationId: 'getTime'
+      responses:
+        200:
+          description: 'Current time for timeId'
+          content:
+            'application/json; charset=UTF-8':
+              schema:
+                type: 'object'
+                properties:
+                  currentTime:
+                    type: 'string'
+        400:
+          description: 'Invalid request'
+        404:
+          description: 'TimeId requested not found'
+        405:
+          description: 'No timeId provided'
+        500:
+          description: 'Server unable to complete request'
+    put:
+      summary: 'Update the current time'
+      description: 'Update the time for a timeId.'
+      operationId: 'changeTime'
+      requestBody:
+        description: 'Number of minutes to add to current time for a given timeId'
+        required: true
+        content:
+          'application/json':
+            schema:
+              type: 'object'
+              properties:
+                addMinutes:
+                  type: 'integer'
+                  format: 'int64'
+              required:
+              - 'addMinutes'
+      responses:
+        200:
+          description: 'Successfully updated timeId'
+          content:
+            'application/json; charset=UTF-8':
+              schema:
+                type: 'object'
+                properties:
+                  currentTime:
+                    type: 'string'
+        400:
+          description: 'Invalid request'
+        404:
+          description: 'TimeId requested not found'
+        405:
+          description: 'No timeId provided'
+        500:
+          description: 'Server unable to complete request'
+    delete:
+      summary: 'Delete a time instance'
+      description: 'Delete a time instance based on timeId.'
+      operationId: 'deleteTime'
+      responses:
+        204:
+          description: 'TimeId destroyed successfully'
+        400:
+          description: 'Invalid request'
+        404:
+          description: 'TimeId requested not found'
+        405:
+          description: 'No timeId provided'
+        500:
+          description: 'Server unable to complete request'

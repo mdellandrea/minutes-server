@@ -1,0 +1,16 @@
+package: github.com/mdellandrea/minutes-server
+import:
+- package: github.com/go-chi/chi
+  version: ^3.3.2
+- package: github.com/go-redis/redis
+  version: ^6.14.0
+- package: github.com/kelseyhightower/envconfig
+  version: ^1.3.0
+- package: github.com/pkg/errors
+  version: ^0.8.0
+- package: github.com/rs/zerolog
+  version: ^1.8.0
+  subpackages:
+  - hlog
+- package: github.com/satori/go.uuid
+  version: ^1.2.0

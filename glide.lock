@@ -1,0 +1,40 @@
+hash: 33069c34fc6c482a8f52b333b4ce5d0d4ea1bee2bdfc0e63f090fe503d3c6bfb
+updated: 2018-08-25T22:08:58.945911-05:00
+imports:
+- name: github.com/go-chi/chi
+  version: e83ac2304db3c50cf03d96a2fcd39009d458bc35
+- name: github.com/go-redis/redis
+  version: 1614e579ed966441b8e0c3ccea1dd0fbbd93a6ae
+  subpackages:
+  - internal
+  - internal/consistenthash
+  - internal/hashtag
+  - internal/pool
+  - internal/proto
+  - internal/singleflight
+  - internal/util
+- name: github.com/kelseyhightower/envconfig
+  version: f611eb38b3875cc3bd991ca91c51d06446afa14c
+- name: github.com/pkg/errors
+  version: 645ef00459ed84a119197bfb8d8205042c6df63d
+- name: github.com/rs/xid
+  version: 4612dfc7d89df26305fae0b5c4f81ff8cbfe2bfe
+- name: github.com/rs/zerolog
+  version: 77db4b4f350e31be66a57c332acb7721cf9ff9bb
+  subpackages:
+  - hlog
+  - internal/cbor
+  - internal/json
+  - log
+- name: github.com/satori/go.uuid
+  version: f58768cc1a7a7e77a3bd49e98cdd21419399b6a3
+- name: github.com/zenazn/goji
+  version: 25de4dfca0cdc84eec486d5c0a89b8b2f140ce51
+  subpackages:
+  - web/mutil
+- name: golang.org/x/sys
+  version: 4910a1d54f876d7b22162a85f4d066d3ee649450
+  subpackages:
+  - unix
+  - windows
+testImports: []
