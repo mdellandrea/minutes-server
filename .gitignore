@@ -1,4 +1,5 @@
 .vscode
 .idea
+._*
 vendor/
 minutes-server

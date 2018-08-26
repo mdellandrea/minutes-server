@@ -1,6 +1,7 @@
 package server
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
@@ -14,7 +15,7 @@ import (
 )
 
 type serverConfig struct {
-	ListenPort string `envconfig:"PORT0" default:":8080"`
+	ListenPort string `envconfig:"PORT0" default:"8080"`
 	DbHost     string `envconfig:"DBHOST" default:"127.0.0.1"`
 	DbPort     string `envconfig:"DBPORT" default:"6379"`
 	Debug      bool   `envconfig:"DEBUG" default:"false"`
@@ -46,6 +47,7 @@ func Init(log zerolog.Logger) *http.Server {
 			Err(err).
 			Msg("environment variable configuration")
 	}
+	log.Debug().Msgf("Server Config: %#v", c)
 
 	if c.Debug {
 		zerolog.SetGlobalLevel(zerolog.DebugLevel)
@@ -63,7 +65,7 @@ func Init(log zerolog.Logger) *http.Server {
 	router := handlers.SetupRoutes(mux, client, log)
 
 	return &http.Server{
-		Addr:    c.ListenPort,
+		Addr:    fmt.Sprintf(":%s", c.ListenPort),
 		Handler: router,
 	}
 }
