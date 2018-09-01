@@ -10,10 +10,10 @@ import (
 	"github.com/satori/go.uuid"
 )
 
-func SetupRoutes(mux *chi.Mux, db Backend, logger zerolog.Logger) *chi.Mux {
+func SetupRoutes(mux *chi.Mux, db Backend, log zerolog.Logger) *chi.Mux {
 	timeHandler := TimeHandler{
-		Db:     db,
-		Logger: logger,
+		Db:  db,
+		Log: log,
 	}
 
 	mux.Route("/time", func(r chi.Router) {
@@ -71,7 +71,7 @@ func (t *TimeHandler) CreateTime(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	_, err = w.Write(resp)
 	if err != nil {
-		t.Logger.Debug().
+		t.Log.Debug().
 			Err(err).
 			Msg("failure during write response")
 	}
@@ -88,7 +88,7 @@ func (t *TimeHandler) GetTime(w http.ResponseWriter, r *http.Request) {
 	val, err := t.Db.GetTimeId(id)
 	if err != nil {
 		if t.Db.NotFoundErrCheck(err) {
-			t.Logger.Debug().Err(err)
+			t.Log.Debug().Err(err)
 			w.WriteHeader(http.StatusNotFound)
 			return
 		}
@@ -107,7 +107,7 @@ func (t *TimeHandler) GetTime(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	_, err = w.Write(resp)
 	if err != nil {
-		t.Logger.Debug().
+		t.Log.Debug().
 			Err(err).
 			Msg("failure during write response")
 	}
@@ -143,7 +143,7 @@ func (t *TimeHandler) ChangeTime(w http.ResponseWriter, r *http.Request) {
 	current, err := t.Db.GetTimeId(id)
 	if err != nil {
 		if t.Db.NotFoundErrCheck(err) {
-			t.Logger.Debug().Err(err)
+			t.Log.Debug().Err(err)
 			w.WriteHeader(http.StatusNotFound)
 			return
 		}
@@ -170,7 +170,7 @@ func (t *TimeHandler) ChangeTime(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	_, err = w.Write(resp)
 	if err != nil {
-		t.Logger.Debug().
+		t.Log.Debug().
 			Err(err).
 			Msg("failure during write response")
 	}
@@ -186,7 +186,7 @@ func (t *TimeHandler) DeleteTime(w http.ResponseWriter, r *http.Request) {
 	err := t.Db.DeleteTimeId(id)
 	if err != nil {
 		if t.Db.NotFoundErrCheck(err) {
-			t.Logger.Debug().Err(err)
+			t.Log.Debug().Err(err)
 			w.WriteHeader(http.StatusNotFound)
 			return
 		}

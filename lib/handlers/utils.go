@@ -27,6 +27,7 @@ func validTimeFormat(timeStr string) bool {
 
 func calculateTime(timeStr string, change int) string {
 	start := timeToMinutes(timeStr)
+	// 1440 minutes == 24 hours
 	ch := change % 1440
 	diff := (start + ch) % 1440
 
@@ -61,6 +62,7 @@ func minutesToTime(minutes int) string {
 	var x = minutes
 	var mm = "AM"
 
+	// 720 minutes == 12 hours
 	if minutes >= 720 {
 		mm = "PM"
 		x = minutes - 720

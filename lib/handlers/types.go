@@ -12,8 +12,8 @@ type Backend interface {
 }
 
 type TimeHandler struct {
-	Db     Backend
-	Logger zerolog.Logger
+	Db  Backend
+	Log zerolog.Logger
 }
 
 type NewTimeRequest struct {

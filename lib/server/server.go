@@ -9,6 +9,7 @@ import (
 	"github.com/mdellandrea/minutes-server/lib/handlers"
 
 	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/middleware"
 	"github.com/kelseyhightower/envconfig"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/hlog"
@@ -18,10 +19,11 @@ type serverConfig struct {
 	ListenPort string `envconfig:"PORT0" default:"8080"`
 	DbHost     string `envconfig:"DBHOST" default:"127.0.0.1"`
 	DbPort     string `envconfig:"DBPORT" default:"6379"`
-	Debug      bool   `envconfig:"DEBUG" default:"false"`
+	Debug      bool   `envconfig:"DEBUG"`
 }
 
 func setupMiddleware(log zerolog.Logger, mux *chi.Mux) {
+	mux.Use(middleware.Heartbeat("/ping"))
 	mux.Use(hlog.NewHandler(log))
 	mux.Use(hlog.AccessHandler(func(r *http.Request, status, size int, duration time.Duration) {
 		hlog.FromRequest(r).Info().
@@ -47,11 +49,11 @@ func Init(log zerolog.Logger) *http.Server {
 			Err(err).
 			Msg("environment variable configuration")
 	}
-	log.Debug().Msgf("Server Config: %#v", c)
 
 	if c.Debug {
 		zerolog.SetGlobalLevel(zerolog.DebugLevel)
 	}
+	log.Debug().Msgf("Server Config: %#v", c)
 
 	client, err := backend.NewBackend(c.DbHost, c.DbPort)
 	if err != nil {
